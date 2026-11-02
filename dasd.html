@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Addis Fitness | The Most Supportive Community</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0f1115', // Deep slate/black
+                            darker: '#0a0b0d',
+                            gray: '#1f2229', // Card background
+                            light: '#e2e8f0', // Text
+                            action: '#e63946', // Signal Red/Orange for CTAs
+                            actionHover: '#d62828',
+                        }
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'linear-gradient(to right, rgba(15, 17, 21, 0.95) 0%, rgba(15, 17, 21, 0.7) 50%, rgba(15, 17, 21, 0.2) 100%)',
+                        'card-gradient': 'linear-gradient(145deg, #1f2229 0%, #15171c 100%)',
+                        'accent-gradient': 'linear-gradient(135deg, #e63946 0%, #ff5c33 100%)',
+                    },
+                    boxShadow: {
+                        'neon': '0 0 15px rgba(230, 57, 70, 0.5)',
+                        '3d': '20px 20px 60px #090a0c, -20px -20px 60px #15181e',
+                        'card': '0 10px 30px -10px rgba(0,0,0,0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0f1115;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Smooth reveal animation classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Text Gradient */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(90deg, #ffffff, #a0aec0);
+        }
+
+        /* Action Button Styling */
+        .btn-action {
+            background: linear-gradient(135deg, #e63946 0%, #ff5c33 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff5c33 0%, #e63946 100%);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+        
+        .btn-action:hover::before {
+            left: 0;
+        }
+
+        .btn-action:hover {
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Glassmorphism Stats Card */
+        .glass-card {
+            background: rgba(31, 34, 41, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Hover effect for program cards */
+        .program-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            border-bottom: 3px solid #e63946;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1115;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2229;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e63946;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-action selection:text-white">
+
+    <nav class="fixed w-full z-50 transition-all duration-300 py-4 px-6 md:px-12" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-display font-black tracking-tighter text-white flex items-center gap-2">
+                <i class="fa-solid fa-dumbbell text-brand-action"></i>
+                ADDIS<span class="text-brand-action">FITNESS</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center font-semibold text-sm tracking-wide">
+                <a href="#programs" class="text-brand-light hover:text-white transition-colors">PROGRAMS</a>
+                <a href="#about" class="text-brand-light hover:text-white transition-colors">ABOUT</a>
+                <a href="#contact" class="text-brand-action hover:text-brand-actionHover transition-colors text-2xl" title="Call Us Now">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </a>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="hidden md:block">
+                <a href="#contact" class="btn-action px-6 py-3 rounded-sm font-bold text-white text-sm tracking-wider uppercase inline-block">
+                    Get Started
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-white text-2xl focus:outline-none" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown (Hidden by default) -->
+        <div class="md:hidden hidden absolute top-full left-0 w-full bg-brand-darker border-t border-gray-800 shadow-xl" id="mobile-menu">
+            <div class="flex flex-col p-6 space-y-4 text-center font-semibold">
+                <a href="#programs" class="text-brand-light hover:text-brand-action py-2">PROGRAMS</a>
+                <a href="#about" class="text-brand-light hover:text-brand-action py-2">ABOUT</a>
+                <a href="#contact" class="btn-action w-full py-4 mt-4 rounded-sm font-bold text-white text-sm tracking-wider uppercase flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-phone"></i> 099 010 2877
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <!-- Background Image/Video Setup -->
+        <div class="absolute inset-0 z-0">
+            <!-- Placeholder for a high-quality gym image -->
+            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop" 
+                 alt="Addis Fitness Gym Floor" 
+                 class="w-full h-full object-cover object-center opacity-40">
+            <!-- Gradient Overlay to ensure text readability -->
+            <div class="absolute inset-0 bg-hero-gradient"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            <div class="reveal max-w-2xl">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-8 h-1 bg-brand-action"></div>
+                    <span class="text-brand-action font-bold tracking-widest text-xs uppercase">Welcome to the Culture</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-display font-black leading-[1.1] mb-6 uppercase">
+                    The Most <br>
+                    <span class="text-transparent bg-clip-text bg-accent-gradient">Supportive</span><br>
+                    Fitness Community.
+                </h1>
+                
+                <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-lg leading-relaxed font-light">
+                    Culture-first, equipment-second. We build strength, confidence, and belonging in Addis Ababa. Stop wandering the gym floor alone.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#contact" class="btn-action px-8 py-4 rounded-sm font-bold text-white text-center text-sm tracking-wider uppercase flex items-center justify-center gap-2">
+                        Get Started Today <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#programs" class="px-8 py-4 rounded-sm font-bold text-white text-center text-sm tracking-wider uppercase border border-gray-700 hover:bg-gray-800 transition-colors flex items-center justify-center">
+                        View Programs
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Stats / Glass Card (Inspired by reference) -->
+            <div class="hidden lg:flex justify-end reveal" style="transition-delay: 0.2s;">
+                <div class="glass-card p-8 rounded-lg max-w-sm relative">
+                    <!-- Decorative element -->
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-brand-action rounded-full mix-blend-screen filter blur-2xl opacity-30"></div>
+                    
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-5xl font-display font-black text-white mb-2">100<span class="text-brand-action">%</span></h3>
+                            <p class="text-sm text-gray-400">Culture focused. We prioritize your environment and support system over just selling access to machines.</p>
+                        </div>
+                        <div class="h-px w-full bg-gray-700"></div>
+                        <div>
+                            <h3 class="text-5xl font-display font-black text-white mb-2">500<span class="text-brand-action">+</span></h3>
+                            <p class="text-sm text-gray-400">Members transformed. Real people, real results—from complete beginners to seasoned athletes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Large background text -->
+        <div class="absolute bottom-[-5%] left-0 w-full overflow-hidden z-0 pointer-events-none opacity-[0.03]">
+            <h2 class="text-[15vw] font-display font-black whitespace-nowrap text-white text-center">ADDIS FITNESS</h2>
+        </div>
+    </section>
+
+    <section class="bg-brand-darker py-8 border-y border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 reveal">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="text-gray-400 text-sm font-bold tracking-widest uppercase text-center md:text-left">
+                    Trusted by our local community
+                </div>
+                
+                <div class="flex items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                    <!-- Google Reviews Fake Widget -->
+                    <div class="flex items-center gap-3">
+                        <i class="fa-brands fa-google text-2xl text-white"></i>
+                        <div class="flex flex-col">
+                            <div class="flex text-yellow-500 text-sm">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="text-xs font-bold text-white">4.0/5 Average</span>
+                        </div>
+                    </div>
+                    <!-- Placeholder Logos -->
+                    <div class="text-xl font-display font-bold text-white">LOCAL <span class="font-light">NEWS</span></div>
+                    <div class="text-xl font-display font-bold text-white">ETHIO <span class="font-light">ATHLETICS</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Culture / Vibe Gallery Section -->
+    <section class="py-12 bg-brand-dark">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 reveal">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] md:auto-rows-[280px]">
+                
+                <!-- Main large image (Athlete Grinding) -->
+                <div class="col-span-2 row-span-2 relative group overflow-hidden rounded-sm shadow-card border border-gray-800">
+                    <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=1200&auto=format&fit=crop" alt="Athlete grinding hard" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
+                </div>
+                
+                <!-- Equipment 1 -->
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-sm shadow-card border border-gray-800">
+                    <!-- Updated to a more focused heavy dumbbell shot -->
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop" alt="Heavy dumbbells" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-brand-darker opacity-20 group-hover:opacity-0 transition-opacity duration-500"></div>
+                </div>
+                
+                <!-- Group Exercise 1 -->
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-sm shadow-card border border-gray-800">
+                    <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop" alt="Group fitness" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-brand-darker opacity-20 group-hover:opacity-0 transition-opacity duration-500"></div>
+                </div>
+                
+                <!-- Group Exercise 2 -->
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-sm shadow-card border border-gray-800">
+                    <img src="https://images.unsplash.com/photo-1548690312-e3b507d8c110?q=80&w=600&auto=format&fit=crop" alt="Group fitness class" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-brand-darker opacity-20 group-hover:opacity-0 transition-opacity duration-500"></div>
+                </div>
+                
+                <!-- Equipment 2 -->
+                <div class="col-span-1 row-span-1 relative group overflow-hidden rounded-sm shadow-card border border-gray-800">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=600&auto=format&fit=crop" alt="Plates and bar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-brand-darker opacity-20 group-hover:opacity-0 transition-opacity duration-500"></div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-brand-dark relative" id="about">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <!-- Image grid -->
+                <div class="grid grid-cols-2 gap-4 reveal">
+                    <img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=1000&auto=format&fit=crop" alt="Member lifting" class="rounded-lg object-cover h-64 w-full shadow-card">
+                    <img src="https://images.unsplash.com/photo-1534438097544-ad8b00681a95?q=80&w=1000&auto=format&fit=crop" alt="Group class" class="rounded-lg object-cover h-64 w-full mt-8 shadow-card">
+                </div>
+
+                <!-- Text Content -->
+                <div class="reveal">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-1 bg-brand-action"></div>
+                        <span class="text-brand-action font-bold tracking-widest text-xs uppercase">Who we serve</span>
+                    </div>
+                    
+                    <h2 class="text-4xl md:text-5xl font-display font-black mb-6 uppercase leading-tight">
+                        Built for those who want <span class="text-transparent bg-clip-text bg-accent-gradient">more than a treadmill.</span>
+                    </h2>
+                    
+                    <p class="text-gray-400 mb-8 leading-relaxed">
+                        We aren't a big-box commercial gym where you swipe a card and disappear. Addis Fitness is for people who want guidance, community, and results.
+                    </p>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-gray flex items-center justify-center shrink-0 border border-gray-700">
+                                <i class="fa-solid fa-seedling text-brand-action"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">The Intimidated Beginner</h4>
+                                <p class="text-sm text-gray-400">Start safely with coaches who care about your form, not how much weight is on the bar.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-gray flex items-center justify-center shrink-0 border border-gray-700">
+                                <i class="fa-solid fa-briefcase text-brand-action"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">The Busy Professional</h4>
+                                <p class="text-sm text-gray-400">Efficient, effective workouts designed to get you in, out, and back to your life.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-brand-gray flex items-center justify-center shrink-0 border border-gray-700">
+                                <i class="fa-solid fa-bolt text-brand-action"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg mb-1">The Serious Athlete</h4>
+                                <p class="text-sm text-gray-400">Top-tier equipment and a culture that pushes you to break plateaus.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-brand-darker relative" id="programs">
+        <!-- Subtle background detail -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-brand-action opacity-[0.02] transform -skew-x-12"></div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+                <div class="max-w-2xl">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-1 bg-brand-action"></div>
+                        <span class="text-brand-action font-bold tracking-widest text-xs uppercase">What We Offer</span>
+                    </div>
+                    <h2 class="text-4xl md:text-6xl font-display font-black uppercase leading-none">
+                        Programs Built <br>To Win
+                    </h2>
+                </div>
+                <p class="text-gray-400 max-w-sm mt-6 md:mt-0 text-sm border-l border-brand-action pl-4">
+                    Every program is designed with one goal in mind: getting you the results you came here for. No fluff, no filler.
+                </p>
+            </div>
+
+            <!-- Programs Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1 -->
+                <div class="bg-brand-gray rounded-sm overflow-hidden program-card reveal shadow-card flex flex-col h-full border border-gray-800">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop" alt="Personal Training" class="w-full h-full object-cover opacity-80">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-gray to-transparent"></div>
+                        <span class="absolute top-4 left-4 text-xs font-black text-brand-action">01</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-xl font-display font-black uppercase mb-3 text-white">One-On-One Coaching</h3>
+                        <p class="text-gray-400 text-sm mb-6 flex-grow">Fully personalized training sessions built around your schedule, body, and goals. No templates—just results.</p>
+                        <a href="#contact" class="text-brand-action text-sm font-bold uppercase tracking-wider flex items-center gap-2 hover:text-white transition-colors mt-auto">
+                            Learn More <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-brand-gray rounded-sm overflow-hidden program-card reveal shadow-card flex flex-col h-full border border-gray-800" style="transition-delay: 0.1s;">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1548690312-e3b507d8c110?q=80&w=800&auto=format&fit=crop" alt="Group Classes" class="w-full h-full object-cover opacity-80">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-gray to-transparent"></div>
+                        <span class="absolute top-4 left-4 text-xs font-black text-brand-action">02</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-xl font-display font-black uppercase mb-3 text-white">Group Training</h3>
+                        <p class="text-gray-400 text-sm mb-6 flex-grow">High-energy small group sessions combining community motivation with expert coaching for maximum output.</p>
+                        <a href="#contact" class="text-brand-action text-sm font-bold uppercase tracking-wider flex items-center gap-2 hover:text-white transition-colors mt-auto">
+                            Learn More <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-brand-gray rounded-sm overflow-hidden program-card reveal shadow-card flex flex-col h-full border border-gray-800" style="transition-delay: 0.2s;">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop" alt="Nutrition" class="w-full h-full object-cover opacity-80">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-gray to-transparent"></div>
+                        <span class="absolute top-4 left-4 text-xs font-black text-brand-action">03</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-xl font-display font-black uppercase mb-3 text-white">Nutrition Planning</h3>
+                        <p class="text-gray-400 text-sm mb-6 flex-grow">Fuel your transformation with a personalized nutrition strategy tailored to your goals and lifestyle in Addis.</p>
+                        <a href="#contact" class="text-brand-action text-sm font-bold uppercase tracking-wider flex items-center gap-2 hover:text-white transition-colors mt-auto">
+                            Learn More <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Quick View All button -->
+            <div class="mt-12 text-center reveal">
+                <a href="#contact" class="inline-flex items-center gap-2 text-white border border-gray-600 hover:border-brand-action px-8 py-3 rounded-sm font-bold text-sm tracking-wider uppercase transition-all hover:bg-brand-action/10">
+                    Get Started <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 relative overflow-hidden bg-brand-dark border-t border-gray-800" id="contact">
+        <!-- Background setup -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2000&auto=format&fit=crop" alt="Gym Background" class="w-full h-full object-cover opacity-[0.03] filter grayscale">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-darker"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+            
+            <div class="text-center mb-16 reveal">
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <div class="w-8 h-1 bg-brand-action"></div>
+                    <span class="text-brand-action font-bold tracking-widest text-xs uppercase">Get In Touch</span>
+                    <div class="w-8 h-1 bg-brand-action"></div>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-display font-black uppercase mb-4">
+                    Connect & <span class="text-transparent bg-clip-text bg-accent-gradient">Contact</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Ready to start your fitness journey? Visit us or reach out via phone today.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Location Info -->
+                <div class="bg-brand-gray/60 backdrop-blur-md p-10 rounded-lg shadow-2xl border border-gray-700 reveal text-center flex flex-col items-center hover:border-brand-action transition-colors duration-300">
+                    <div class="w-16 h-16 bg-brand-dark rounded-full flex items-center justify-center text-brand-action text-2xl mb-6 shadow-neon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white mb-4 uppercase">Location</h3>
+                    <p class="text-gray-300 text-base leading-relaxed">
+                        Brumes Building | Figa<br>
+                        ብሩመስ ህንፃ | ፊጋ<br>
+                        Addis Ababa
+                    </p>
+                </div>
+
+                <!-- Phone Info -->
+                <div class="bg-brand-gray/60 backdrop-blur-md p-10 rounded-lg shadow-2xl border border-gray-700 reveal text-center flex flex-col items-center hover:border-brand-action transition-colors duration-300" style="transition-delay: 0.1s;">
+                    <div class="w-16 h-16 bg-brand-dark rounded-full flex items-center justify-center text-brand-action text-2xl mb-6 shadow-neon">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white mb-4 uppercase">Call Us</h3>
+                    <p class="text-gray-300 text-base mb-4">
+                        We are ready to assist you.
+                    </p>
+                    <a href="tel:0990102877" class="text-3xl font-display font-black text-brand-action hover:text-white transition-colors">099 010 2877</a>
+                </div>
+
+                <!-- Hours Info -->
+                <div class="bg-brand-gray/60 backdrop-blur-md p-10 rounded-lg shadow-2xl border border-gray-700 reveal text-center flex flex-col items-center hover:border-brand-action transition-colors duration-300" style="transition-delay: 0.2s;">
+                    <div class="w-16 h-16 bg-brand-dark rounded-full flex items-center justify-center text-brand-action text-2xl mb-6 shadow-neon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white mb-4 uppercase">Hours</h3>
+                    <div class="flex flex-col items-center text-gray-300 text-base space-y-2 w-full">
+                        <div class="flex flex-col justify-center border-b border-gray-700 w-full pb-3 mb-1">
+                            <span class="uppercase tracking-widest text-xs text-gray-500 mb-1">Everyday</span> 
+                            <span class="text-white font-bold text-xl">Open - 9:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 flex justify-center gap-6 reveal" style="transition-delay: 0.3s;">
+                <a href="https://www.instagram.com/addisfitness/?hl=en" target="_blank" class="w-14 h-14 rounded-full bg-brand-gray flex items-center justify-center text-white text-xl hover:bg-brand-action hover:scale-110 transition-all shadow-card"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@addis.fitness" target="_blank" class="w-14 h-14 rounded-full bg-brand-gray flex items-center justify-center text-white text-xl hover:bg-brand-action hover:scale-110 transition-all shadow-card"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-brand-darker py-8 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+            <a href="#" class="text-xl font-display font-black tracking-tighter text-white flex items-center gap-2">
+                <i class="fa-solid fa-dumbbell text-brand-action"></i>
+                ADDIS<span class="text-brand-action">FITNESS</span>
+            </a>
+            <p>&copy; 2026 Addis Fitness. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const icon = mobileMenuBtn.querySelector('i');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                if(mobileMenu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                }
+            });
+
+            // Close mobile menu on link click
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                });
+            });
+
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-brand-dark/95', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+                    navbar.classList.remove('py-4');
+                } else {
+                    navbar.classList.remove('bg-brand-dark/95', 'backdrop-blur-md', 'shadow-lg', 'py-3');
+                    navbar.classList.add('py-4');
+                }
+            });
+
+            // Scroll Reveal Animation Intersection Observer
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+            
+            // Trigger initial reveal for above-fold elements immediately
+            setTimeout(() => {
+                revealElements.forEach(el => {
+                    if (el.getBoundingClientRect().top < window.innerHeight) {
+                        el.classList.add('active');
+                    }
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
